@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Humanity Dating App</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <canvas id="three-canvas"></canvas>
+
+    <header class="app-header">
+      <img src="/assets/logo.png" class="logo" alt="앱 로고" />
+      <div class="auth-status">
+        <span id="status">🔐 인증 상태: 미확인</span>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <h1 class="main-title">Real. <span class="highlight">Human.</span> Connection.</h1>
+
+      <div class="profile-controls">
+        <p>❤️ 심박수: <span id="bpm">--</span> bpm</p>
+        <div class="button-group">
+          <button id="connectWalletBtn">지갑 연결</button>
+          <button id="startBtn">💓 매칭 시작</button>
+          <button id="nextBtn">➡️ 다음</button>
+        </div>
+      </div>
+      
+      <div class="profile-info-card">
+        <p>🔍 매칭할 상대를 불러오는 중...</p>
+        <!-- JS가 여기 내용을 채워줍니다 -->
+      </div>
+      
+
+      <svg class="pulse-meter" width="100" height="100">
+        <circle cx="50" cy="50" r="45" stroke="#888" stroke-width="10" fill="none" />
+        <circle id="pulse-circle" cx="50" cy="50" r="45" stroke="#ff6b81" stroke-width="10" fill="none"
+                stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" />
+      </svg>
+
+      <div id="match-result" class="hidden"></div>
+
+      <div class="chat-ui chat-hidden">
+        <div class="token-balance">TALK 잔액: 4</div>
+        <textarea placeholder="메시지를 입력하세요..."></textarea>
+        <button>1 TALK 전송</button>
+      </div>
+
+      <!-- ✅ VC 등록 요청 영역 -->
+      <div class="vc-request" style="margin-top: 3rem; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; max-width: 500px; margin-inline: auto;">
+        <h2>📝 VC 등록 요청</h2>
+        <input type="text" id="walletRequest" placeholder="지갑 주소 입력" style="width: 100%; padding: 0.5rem;" />
+        <button id="requestRegisterBtn" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">📩 등록 요청하기</button>
+        <p id="requestResult" style="margin-top: 1rem;"></p>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      // VC 등록 요청 버튼 기능 (백엔드 없이 콘솔 로그만)
+      document.getElementById("requestRegisterBtn")?.addEventListener("click", async () => {
+        const input = document.getElementById("walletRequest");
+        const resultEl = document.getElementById("requestResult");
+        const address = input.value.trim();
+        if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
+          resultEl.innerText = "❌ 유효한 지갑 주소를 입력해주세요.";
+          return;
+        }
+        try {
+          console.log("📨 VC 등록 요청됨:", address);
+          resultEl.innerText = "✅ 등록 요청이 성공적으로 제출되었습니다.";
+        } catch (err) {
+          console.error(err);
+          resultEl.innerText = "❌ 요청 실패: " + err.message;
+        }
+      });
+    </script>
+  </body>
+</html>
